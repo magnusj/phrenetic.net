@@ -25,6 +25,7 @@ A retro Amiga-style demoscene experience built with React, Three.js, and WebGL s
 - **Checkerboard Floor** - Perspective floor grid
 - **Mandelbrot Zoom** - Fractal zoom animation
 - **DYCP Scroller** - Sine wave text scrolling
+- **Sine Scroll** - Classic vertical scrolling credits
 - **Moire Patterns** - Audio-reactive interference patterns with bass-driven white flashes
 
 ### Audio Features
@@ -37,14 +38,17 @@ A retro Amiga-style demoscene experience built with React, Three.js, and WebGL s
 - **React Three Fiber** - Declarative 3D with React
 - **Custom GLSL Shaders** - Hand-crafted vertex and fragment shaders
 - **Scene Management** - Automatic scene transitions with progress indicators
+- **SceneInfo Overlay** - Real-time stats display for each effect
 - **CRT Effects** - Scanlines and screen curvature for authentic retro feel
 - **Performance Optimized** - Ref-based architecture prevents unnecessary re-renders
+- **Production Ready** - Docker deployment with nginx, gzip compression, and security headers
 
 ## 🚀 Getting Started
 
 ### Prerequisites
 - Node.js 18+
 - npm or yarn
+- Docker (optional, for deployment)
 
 ### Installation
 
@@ -61,6 +65,50 @@ npm run dev
 ```
 
 Visit `http://localhost:5173` to view the demo.
+
+### Production Build
+
+```bash
+# Build for production
+npm run build
+
+# Preview production build locally
+npm run preview
+```
+
+The production build is output to the `dist/` directory.
+
+## 🐳 Docker Deployment
+
+### Build and Run with Docker
+
+```bash
+# Build the Docker image
+docker build -t phrenetic-demo .
+
+# Run the container
+docker run -d -p 8080:80 phrenetic-demo
+```
+
+Visit `http://localhost:8080` to view the demo.
+
+### Docker Features
+
+- **Multi-stage build** - Optimized build process with separate build and runtime stages
+- **Nginx server** - Production-ready web server with:
+  - Gzip compression for faster loading
+  - Security headers (X-Frame-Options, X-Content-Type-Options, X-XSS-Protection)
+  - Static asset caching (1 year expiry)
+  - SPA routing support
+  - Health check endpoint at `/health`
+
+### Deployment Platforms
+
+The Docker setup is compatible with various deployment platforms including:
+- Coolify (includes health check endpoint)
+- Railway
+- Render
+- Any Docker-compatible hosting service
 
 ## 🎹 Controls
 
@@ -81,18 +129,29 @@ Replace these files with your own music to customize the experience.
 ```
 src/
 ├── components/
-│   ├── effects/          # Individual effect components
-│   ├── scenes/           # Scene wrapper components
-│   ├── SceneManager.tsx  # Scene transition logic
-│   └── SceneInfo.tsx     # Effect info display
-├── shaders/              # GLSL shader code
+│   ├── effects/           # Individual effect components
+│   ├── scenes/            # Scene wrapper components
+│   ├── SceneManager.tsx   # Scene transition logic
+│   ├── SceneInfo.tsx      # Effect info display
+│   ├── AudioPlayer.tsx    # Audio playback component
+│   └── DemoScene.tsx      # Demo scene wrapper
+├── shaders/               # GLSL shader code
 ├── hooks/
-│   └── useAudioAnalyzer.ts  # Web Audio API integration
+│   └── useAudioAnalyzer.ts   # Web Audio API integration
 ├── config/
-│   └── scenes.tsx        # Scene configuration
-└── types/
-    └── audio.ts          # TypeScript types
+│   └── scenes.tsx         # Scene configuration
+├── types/
+│   └── audio.ts           # TypeScript types
+└── assets/                # Static assets
 
+public/                    # Public assets
+├── tribute-to-amiga-500.mp3
+├── pixel-dreams.mp3
+├── techno-plasma.mp3
+└── amiga-computer.jpg
+
+Dockerfile                 # Docker build configuration
+nginx.conf                 # Nginx server configuration
 ```
 
 ## 🎨 Creating Custom Effects
@@ -157,6 +216,12 @@ The title scene (scene 0) has infinite duration and only advances when the user 
 - Ref-based data flow prevents React re-render issues
 - Audio data updates at 60fps via `requestAnimationFrame`
 
+### Scene Management
+- Each scene has its own duration and component
+- Automatic transitions with progress indicator
+- `SceneInfo` overlay displays real-time stats for each effect (vertices, parameters, etc.)
+- Title scene has infinite duration, advances on user click
+
 ### Moire Patterns Scene
 - Custom dual-audio setup with techno track
 - Bass threshold detection (configurable, default: 170)
@@ -171,7 +236,15 @@ The title scene (scene 0) has infinite duration and only advances when the user 
 
 ## 📄 License
 
-This project is open source and available under the MIT License.
+Copyright © 2025 PHRENETiC.NET
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+### Music Attribution
+
+The music files included in this project (`tribute-to-amiga-500.mp3`, `pixel-dreams.mp3`, `techno-plasma.mp3`) are original compositions by PHRENETiC.NET and are also covered under the MIT License.
+
+**Attribution required:** When using this music, you must credit PHRENETiC.NET as the composer.
 
 ## 🙏 Acknowledgments
 
