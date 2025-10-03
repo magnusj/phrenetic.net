@@ -2,13 +2,13 @@ import { useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { tunnelVertexShader, tunnelFragmentShader } from '../../shaders/tunnel';
-import type { AudioData } from '../../types/audio';
+import type { AudioAnalysisData } from '../../types/audio';
 
 interface TunnelEffectProps {
-  audioData: AudioData | null;
+  audioData: AudioAnalysisData | null;
 }
 
-export const TunnelEffect = ({ audioData }: TunnelEffectProps) => {
+export const TunnelEffect = ({ audioData: _audioData }: TunnelEffectProps) => {
   const meshRef = useRef<THREE.Mesh>(null);
   const materialRef = useRef<THREE.ShaderMaterial>(null);
   const { viewport } = useThree();

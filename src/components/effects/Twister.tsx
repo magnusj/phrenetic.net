@@ -2,13 +2,13 @@ import { useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { twisterVertexShader, twisterFragmentShader } from '../../shaders/twister';
-import type { AudioData } from '../../types/audio';
+import type { AudioAnalysisData } from '../../types/audio';
 
 interface TwisterProps {
-  audioData: AudioData | null;
+  audioData: AudioAnalysisData | null;
 }
 
-export const Twister = ({ audioData }: TwisterProps) => {
+export const Twister = ({ audioData: _audioData }: TwisterProps) => {
   const meshRef = useRef<THREE.Mesh>(null);
   const materialRef = useRef<THREE.ShaderMaterial>(null);
   const { viewport } = useThree();

@@ -1,18 +1,18 @@
 import { useEffect, useRef } from 'react';
-import type { AudioData } from '../../types/audio';
+import type { AudioAnalysisData } from '../../types/audio';
 import './SineScroll.css';
 
 interface SineScrollProps {
-  audioData: AudioData | null;
+  audioData: AudioAnalysisData | null;
   text: string[];
   speed?: number;
   amplitude?: number;
 }
 
-export const SineScroll = ({ audioData, text, speed = 30, amplitude = 80 }: SineScrollProps) => {
+export const SineScroll = ({ audioData: _audioData, text, speed = 30, amplitude = 80 }: SineScrollProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollPosRef = useRef(window.innerHeight);
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number | undefined>(undefined);
 
   useEffect(() => {
     const animate = () => {

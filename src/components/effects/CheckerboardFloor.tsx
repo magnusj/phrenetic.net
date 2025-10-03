@@ -2,13 +2,13 @@ import { useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { checkerboardVertexShader, checkerboardFragmentShader } from '../../shaders/checkerboard';
-import type { AudioData } from '../../types/audio';
+import type { AudioAnalysisData } from '../../types/audio';
 
 interface CheckerboardFloorProps {
-  audioData: AudioData | null;
+  audioData: AudioAnalysisData | null;
 }
 
-export const CheckerboardFloor = ({ audioData }: CheckerboardFloorProps) => {
+export const CheckerboardFloor = ({ audioData: _audioData }: CheckerboardFloorProps) => {
   const meshRef = useRef<THREE.Mesh>(null);
   const materialRef = useRef<THREE.ShaderMaterial>(null);
   const { viewport } = useThree();

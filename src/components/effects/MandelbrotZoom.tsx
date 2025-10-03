@@ -2,13 +2,13 @@ import { useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { mandelbrotVertexShader, mandelbrotFragmentShader } from '../../shaders/mandelbrot';
-import type { AudioData } from '../../types/audio';
+import type { AudioAnalysisData } from '../../types/audio';
 
 interface MandelbrotZoomProps {
-  audioData: AudioData | null;
+  audioData: AudioAnalysisData | null;
 }
 
-export const MandelbrotZoom = ({ audioData }: MandelbrotZoomProps) => {
+export const MandelbrotZoom = ({ audioData: _audioData }: MandelbrotZoomProps) => {
   const meshRef = useRef<THREE.Mesh>(null);
   const materialRef = useRef<THREE.ShaderMaterial>(null);
   const { viewport } = useThree();

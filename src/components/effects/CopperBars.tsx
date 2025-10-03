@@ -1,13 +1,13 @@
 import { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
-import type { AudioData } from '../../types/audio';
+import type { AudioAnalysisData } from '../../types/audio';
 
 interface CopperBarsProps {
-  audioData: AudioData | null;
+  audioData: AudioAnalysisData | null;
 }
 
-export const CopperBars = ({ audioData }: CopperBarsProps) => {
+export const CopperBars = ({ audioData: _audioData }: CopperBarsProps) => {
   const groupRef = useRef<THREE.Group>(null);
   const NUM_BARS = 32;
 

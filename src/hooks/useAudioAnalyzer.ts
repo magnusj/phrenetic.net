@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import type { AudioData } from '../types/audio';
+import type { AudioAnalysisData } from '../types/audio';
 
 export const useAudioAnalyzer = (audioElement: HTMLAudioElement | null) => {
-  const [audioData, setAudioData] = useState<AudioData | null>(null);
+  const [audioData, setAudioData] = useState<AudioAnalysisData | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
   const sourceRef = useRef<MediaElementAudioSourceNode | null>(null);

@@ -2,43 +2,24 @@ import { useRef, useState } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { amigaBallVertexShader, amigaBallFragmentShader } from '../../shaders/amigaball';
-import type { AudioData } from '../../types/audio';
+import type { AudioAnalysisData } from '../../types/audio';
 import './AmigaBall.css';
 
 interface AmigaBallProps {
-  audioData: AudioData | null;
+  audioData: AudioAnalysisData | null;
   onStartDemo?: () => void;
 }
 
-export const AmigaBall = ({ audioData, onStartDemo }: AmigaBallProps) => {
+export const AmigaBall = ({ audioData: _audioData, onStartDemo: _onStartDemo }: AmigaBallProps) => {
   const meshRef = useRef<THREE.Mesh>(null);
   const materialRef = useRef<THREE.ShaderMaterial>(null);
   const { viewport } = useThree();
-  const [isFullscreen, setIsFullscreen] = useState(false);
 
   useFrame(({ clock }) => {
     if (materialRef.current) {
       materialRef.current.uniforms.time.value = clock.getElapsedTime();
     }
   });
-
-  const handleStartDemo = async () => {
-    console.log('Start demo clicked');
-
-    // Toggle fullscreen if checked
-    if (isFullscreen) {
-      try {
-        await document.documentElement.requestFullscreen();
-      } catch (err) {
-        console.error('Fullscreen failed:', err);
-      }
-    }
-
-    // Call the callback to start demo (music + timer)
-    if (onStartDemo) {
-      onStartDemo();
-    }
-  };
 
   return (
     <>

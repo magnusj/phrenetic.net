@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { MoirePatterns, AudioDebugOverlay } from '../effects/MoirePatterns';
 import { SceneInfo } from '../SceneInfo';
-import type { AudioData } from '../../types/audio';
+import type { AudioAnalysisData } from '../../types/audio';
 
 interface MoirePatternsSceneProps {
-  audioDataRef: React.RefObject<AudioData | null>;
+  audioDataRef: React.RefObject<AudioAnalysisData | null>;
 }
 
 export const MoirePatternsScene = ({ audioDataRef }: MoirePatternsSceneProps) => {

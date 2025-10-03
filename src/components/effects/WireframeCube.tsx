@@ -1,13 +1,13 @@
 import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
-import type { AudioData } from '../../types/audio';
+import type { AudioAnalysisData } from '../../types/audio';
 
 interface WireframeCubeProps {
-  audioData: AudioData | null;
+  audioData: AudioAnalysisData | null;
 }
 
-export const WireframeCube = ({ audioData }: WireframeCubeProps) => {
+export const WireframeCube = ({ audioData: _audioData }: WireframeCubeProps) => {
   const groupRef = useRef<THREE.Group>(null);
 
   useFrame(({ clock }) => {

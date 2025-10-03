@@ -2,13 +2,13 @@ import { useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { rotozoomerVertexShader, rotozoomerFragmentShader } from '../../shaders/rotozoomer';
-import type { AudioData } from '../../types/audio';
+import type { AudioAnalysisData } from '../../types/audio';
 
 interface RotozoomerProps {
-  audioData: AudioData | null;
+  audioData: AudioAnalysisData | null;
 }
 
-export const Rotozoomer = ({ audioData }: RotozoomerProps) => {
+export const Rotozoomer = ({ audioData: _audioData }: RotozoomerProps) => {
   const meshRef = useRef<THREE.Mesh>(null);
   const materialRef = useRef<THREE.ShaderMaterial>(null);
   const { viewport } = useThree();

@@ -1,13 +1,13 @@
 import { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
-import type { AudioData } from '../../types/audio';
+import type { AudioAnalysisData } from '../../types/audio';
 
 interface DotBallsProps {
-  audioData: AudioData | null;
+  audioData: AudioAnalysisData | null;
 }
 
-export const DotBalls = ({ audioData }: DotBallsProps) => {
+export const DotBalls = ({ audioData: _audioData }: DotBallsProps) => {
   const pointsRef = useRef<THREE.Points>(null);
   const groupRef = useRef<THREE.Group>(null);
 
@@ -68,15 +68,11 @@ export const DotBalls = ({ audioData }: DotBallsProps) => {
         <bufferGeometry>
           <bufferAttribute
             attach="attributes-position"
-            count={particles.count}
-            array={particles.positions}
-            itemSize={3}
+            args={[particles.positions, 3]}
           />
           <bufferAttribute
             attach="attributes-color"
-            count={particles.count}
-            array={particles.colors}
-            itemSize={3}
+            args={[particles.colors, 3]}
           />
         </bufferGeometry>
         <pointsMaterial

@@ -1,4 +1,4 @@
-export interface AudioData {
+export interface AudioAnalysisData {
   frequencyData: Uint8Array;
   timeDomainData: Uint8Array;
   bass: number;

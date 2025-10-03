@@ -1,10 +1,10 @@
 import { useEffect, useRef } from 'react';
-import type { AudioData } from '../../types/audio';
+import type { AudioAnalysisData } from '../../types/audio';
 import './DYCPScroller.css';
 
 interface DYCPScrollerProps {
   text: string;
-  audioData: AudioData | null;
+  audioData: AudioAnalysisData | null;
   speed?: number;
   amplitude?: number;
   frequency?: number;
@@ -12,7 +12,7 @@ interface DYCPScrollerProps {
 
 export const DYCPScroller = ({
   text,
-  audioData,
+  audioData: _audioData,
   speed = 2,
   amplitude = 40,
   frequency = 0.3
@@ -41,8 +41,8 @@ export const DYCPScroller = ({
     const animate = () => {
       scrollPosRef.current -= speed;
 
-      const bassBoost = audioData?.bass || 0;
-      const midBoost = audioData?.mid || 0;
+      const bassBoost = _audioData?.bass || 0;
+      const midBoost = _audioData?.mid || 0;
       const time = Date.now() * 0.001;
 
       // Find the last character's position to check if entire text has scrolled off
@@ -84,7 +84,7 @@ export const DYCPScroller = ({
     return () => {
       cancelAnimationFrame(animationRef.current);
     };
-  }, [text, audioData, speed, amplitude, frequency]);
+  }, [text, _audioData, speed, amplitude, frequency]);
 
   return (
     <div className="dycp-container">

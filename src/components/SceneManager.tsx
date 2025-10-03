@@ -1,5 +1,5 @@
-import { useState, useEffect, ReactNode, cloneElement, isValidElement, useRef } from 'react';
-import type { AudioData } from '../types/audio';
+import { useState, useEffect, type ReactNode, cloneElement, isValidElement, useRef } from 'react';
+import type { AudioAnalysisData } from '../types/audio';
 import './SceneManager.css';
 
 export interface Scene {
@@ -10,7 +10,7 @@ export interface Scene {
 
 interface SceneManagerProps {
   scenes: Scene[];
-  audioData: AudioData | null;
+  audioData: AudioAnalysisData | null;
   isPlaying: boolean;
   onStartDemo: () => void;
   onSceneChange?: (sceneIndex: number) => void;

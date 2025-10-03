@@ -24,9 +24,9 @@ import { MoirePatternsScene } from "../components/scenes/MoirePatternsScene";
 import { SineScroll } from "../components/effects/SineScroll";
 import { SceneInfo } from "../components/SceneInfo";
 import type { Scene } from "../components/SceneManager";
-import type { AudioData } from "../types/audio";
+import type { AudioAnalysisData } from "../types/audio";
 
-export const createScenes = (audioData: AudioData | null, moireAudioDataRef: React.RefObject<AudioData | null> = { current: null }): Scene[] => [
+export const createScenes = (audioData: AudioAnalysisData | null, moireAudioDataRef: React.RefObject<AudioAnalysisData | null> = { current: null }): Scene[] => [
   // Title Screen with bouncing Amiga ball
   {
     id: "title",

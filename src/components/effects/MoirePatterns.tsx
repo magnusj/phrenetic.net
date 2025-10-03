@@ -2,10 +2,10 @@ import { useRef, useState, useEffect } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { moireVertexShader, moireFragmentShader } from '../../shaders/moire';
-import type { AudioData } from '../../types/audio';
+import type { AudioAnalysisData } from '../../types/audio';
 
 interface MoirePatternsProps {
-  audioDataRef: React.RefObject<AudioData | null>;
+  audioDataRef: React.RefObject<AudioAnalysisData | null>;
 }
 
 interface AudioDebugValues {
@@ -149,7 +149,7 @@ export const MoirePatterns = ({ audioDataRef }: MoirePatternsProps) => {
 };
 
 // Audio debug overlay component (to be used outside Canvas)
-export const AudioDebugOverlay = ({ audioDataRef }: { audioDataRef: React.RefObject<AudioData | null> }) => {
+export const AudioDebugOverlay = ({ audioDataRef }: { audioDataRef: React.RefObject<AudioAnalysisData | null> }) => {
   const [debugValues, setDebugValues] = useState<AudioDebugValues>({
     bassAverage: 0,
     bass: 0,

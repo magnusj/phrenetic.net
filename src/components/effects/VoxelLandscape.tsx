@@ -2,13 +2,13 @@ import { useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { voxelVertexShader, voxelFragmentShader } from '../../shaders/voxel';
-import type { AudioData } from '../../types/audio';
+import type { AudioAnalysisData } from '../../types/audio';
 
 interface VoxelLandscapeProps {
-  audioData: AudioData | null;
+  audioData: AudioAnalysisData | null;
 }
 
-export const VoxelLandscape = ({ audioData }: VoxelLandscapeProps) => {
+export const VoxelLandscape = ({ audioData: _audioData }: VoxelLandscapeProps) => {
   const meshRef = useRef<THREE.Mesh>(null);
   const materialRef = useRef<THREE.ShaderMaterial>(null);
   const { viewport } = useThree();

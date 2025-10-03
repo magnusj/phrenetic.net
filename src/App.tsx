@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useMemo } from 'react';
 import { SceneManager } from './components/SceneManager';
 import { useAudioAnalyzer } from './hooks/useAudioAnalyzer';
 import { createScenes } from './config/scenes';
+import type { AudioAnalysisData } from './types/audio';
 import './App.css';
 
 function App() {
@@ -17,7 +18,7 @@ function App() {
   const moireAudioData = useAudioAnalyzer(moireAudioElement);
 
   // Store moireAudioData in a ref for scene 21 to access without causing re-renders
-  const moireAudioDataRef = useRef<AudioData | null>(moireAudioData);
+  const moireAudioDataRef = useRef<AudioAnalysisData | null>(moireAudioData);
   useEffect(() => {
     moireAudioDataRef.current = moireAudioData;
   }, [moireAudioData]);

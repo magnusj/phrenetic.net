@@ -1,19 +1,13 @@
 import { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
-import type { AudioData } from '../../types/audio';
+import type { AudioAnalysisData } from '../../types/audio';
 
 interface StarfieldProps {
-  audioData: AudioData | null;
+  audioData: AudioAnalysisData | null;
 }
 
-interface Star {
-  position: THREE.Vector3;
-  speed: number;
-  color: THREE.Color;
-}
-
-export const Starfield = ({ audioData }: StarfieldProps) => {
+export const Starfield = ({ audioData: _audioData }: StarfieldProps) => {
   const pointsRef = useRef<THREE.Points>(null);
 
   // Create stars
@@ -79,15 +73,11 @@ export const Starfield = ({ audioData }: StarfieldProps) => {
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"
-          count={stars.count}
-          array={stars.positions}
-          itemSize={3}
+          args={[stars.positions, 3]}
         />
         <bufferAttribute
           attach="attributes-color"
-          count={stars.count}
-          array={stars.colors}
-          itemSize={3}
+          args={[stars.colors, 3]}
         />
       </bufferGeometry>
       <pointsMaterial

@@ -1,10 +1,10 @@
 import { Canvas } from '@react-three/fiber';
 import { PlasmaEffect } from './effects/PlasmaEffect';
 import { CopperBars } from './effects/CopperBars';
-import type { AudioData } from '../types/audio';
+import type { AudioAnalysisData } from '../types/audio';
 
 interface DemoSceneProps {
-  audioData: AudioData | null;
+  audioData: AudioAnalysisData | null;
 }
 
 export const DemoScene = ({ audioData }: DemoSceneProps) => {

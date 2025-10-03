@@ -1,13 +1,13 @@
 import { Canvas } from "@react-three/fiber";
 import { AmigaBall, AmigaBallOverlay } from "./AmigaBall";
-import type { AudioData } from "../../types/audio";
+import type { AudioAnalysisData } from "../../types/audio";
 
 interface TitleSceneProps {
-  audioData: AudioData | null;
+  audioData: AudioAnalysisData | null;
   onStartDemo?: () => void;
 }
 
-export const TitleScene = ({ audioData, onStartDemo }: TitleSceneProps) => {
+export const TitleScene = ({ audioData: _audioData, onStartDemo }: TitleSceneProps) => {
   return (
     <>
       <Canvas
@@ -23,7 +23,7 @@ export const TitleScene = ({ audioData, onStartDemo }: TitleSceneProps) => {
         }}
       >
         <color attach="background" args={["#000000"]} />
-        <AmigaBall audioData={audioData} />
+        <AmigaBall audioData={_audioData} />
       </Canvas>
       <AmigaBallOverlay onStartDemo={onStartDemo} />
     </>
