@@ -50,8 +50,8 @@ A retro Amiga-style demoscene experience built with React, Three.js, and WebGL s
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/16bit-demo-2025.git
-cd 16bit-demo-2025
+git clone https://github.com/magnusj/phrenetic.net.git
+cd phrenetic.net
 
 # Install dependencies
 npm install
