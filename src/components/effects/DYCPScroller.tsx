@@ -20,6 +20,7 @@ export const DYCPScroller = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const animationRef = useRef<number>(0);
   const scrollPosRef = useRef<number>(window.innerWidth);
+  const lastTimeRef = useRef<number>(performance.now());
 
   useEffect(() => {
     const container = containerRef.current;
@@ -38,8 +39,11 @@ export const DYCPScroller = ({
       container.appendChild(span);
     });
 
-    const animate = () => {
-      scrollPosRef.current -= speed;
+    const animate = (timestamp: number) => {
+      const delta = (timestamp - lastTimeRef.current) / 1000; // Convert to seconds
+      lastTimeRef.current = timestamp;
+
+      scrollPosRef.current -= speed * delta * 60; // Multiply by 60 to maintain same visual speed
 
       const bassBoost = _audioData?.bass || 0;
       const midBoost = _audioData?.mid || 0;
@@ -79,7 +83,9 @@ export const DYCPScroller = ({
       animationRef.current = requestAnimationFrame(animate);
     };
 
-    animate();
+    // Start animation with initial timestamp
+    lastTimeRef.current = performance.now();
+    animationRef.current = requestAnimationFrame(animate);
 
     return () => {
       cancelAnimationFrame(animationRef.current);

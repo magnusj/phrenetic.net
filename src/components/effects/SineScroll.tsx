@@ -13,13 +13,17 @@ export const SineScroll = ({ audioData: _audioData, text, speed = 30, amplitude 
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollPosRef = useRef(window.innerHeight);
   const animationRef = useRef<number | undefined>(undefined);
+  const lastTimeRef = useRef<number>(performance.now());
 
   useEffect(() => {
-    const animate = () => {
+    const animate = (timestamp: number) => {
       if (!containerRef.current) return;
 
-      // Update scroll position
-      scrollPosRef.current -= speed / 60;
+      const delta = (timestamp - lastTimeRef.current) / 1000; // Convert to seconds
+      lastTimeRef.current = timestamp;
+
+      // Update scroll position (frame-rate independent)
+      scrollPosRef.current -= speed * delta;
 
       // Reset when all text has scrolled off screen
       if (scrollPosRef.current < -text.length * 60) {
@@ -42,7 +46,9 @@ export const SineScroll = ({ audioData: _audioData, text, speed = 30, amplitude 
       animationRef.current = requestAnimationFrame(animate);
     };
 
-    animate();
+    // Start animation with initial timestamp
+    lastTimeRef.current = performance.now();
+    animationRef.current = requestAnimationFrame(animate);
 
     return () => {
       if (animationRef.current) {
