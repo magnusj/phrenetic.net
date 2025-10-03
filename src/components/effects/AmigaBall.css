@@ -1,0 +1,149 @@
+.amiga-ball-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.amiga-ball-overlay .title-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  text-align: center;
+  max-width: 900px;
+  padding: 40px;
+  pointer-events: auto;
+}
+
+.amiga-ball-overlay .title-main {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.amiga-ball-overlay .title-logo {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 24px;
+  font-weight: normal;
+  margin: 0;
+  color: #ff00ff;
+  text-shadow: 2px 2px #00ffff, 4px 4px #000;
+  letter-spacing: 4px;
+}
+
+.amiga-ball-overlay .title-subtitle {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  margin: 0;
+  color: #00ffff;
+  text-shadow: 1px 1px #000;
+  letter-spacing: 2px;
+}
+
+.amiga-ball-overlay .title-tribute {
+  padding: 15px 30px;
+  border: 1px solid #00ffff;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.amiga-ball-overlay .title-tribute p {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  margin: 0;
+  color: #00ffff;
+  text-shadow: 1px 1px #000;
+  letter-spacing: 2px;
+  line-height: 1.6;
+}
+
+.amiga-ball-overlay .title-credits {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.amiga-ball-overlay .credits-label {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  margin: 0;
+  color: #ffffff;
+  text-shadow: 1px 1px #000;
+  letter-spacing: 2px;
+}
+
+.amiga-ball-overlay .credits-name {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 14px;
+  margin: 0;
+  color: #ffff00;
+  text-shadow: 2px 2px #000;
+  letter-spacing: 4px;
+}
+
+.amiga-ball-overlay .title-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.amiga-ball-overlay .start-button {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  padding: 12px 30px;
+  background: #00ffff;
+  border: none;
+  color: #000;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  transition: all 0.3s;
+  min-width: 280px;
+}
+
+.amiga-ball-overlay .start-button:hover {
+  background: #ff00ff;
+  transform: scale(1.05);
+}
+
+.amiga-ball-overlay .fullscreen-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  color: #ffffff;
+  text-shadow: 1px 1px #000;
+  cursor: pointer;
+  letter-spacing: 1px;
+}
+
+.amiga-ball-overlay .fullscreen-option input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: #00ffff;
+}
+
+.amiga-ball-overlay .title-help {
+  padding: 10px 20px;
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid #666;
+}
+
+.amiga-ball-overlay .title-help p {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  margin: 0;
+  color: #888;
+  letter-spacing: 1px;
+}

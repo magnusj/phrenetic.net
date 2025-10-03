@@ -1,0 +1,195 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #000;
+  overflow: hidden;
+  font-family: 'Press Start 2P', monospace;
+}
+
+#root {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+
+.app {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background: #000;
+}
+
+/* CRT Effect */
+.scanlines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    transparent 50%,
+    rgba(0, 0, 0, 0.3) 50%
+  );
+  background-size: 100% 4px;
+  pointer-events: none;
+  z-index: 100;
+  animation: scanline-move 8s linear infinite;
+}
+
+@keyframes scanline-move {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 4px;
+  }
+}
+
+.crt-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.5) 100%);
+  pointer-events: none;
+  z-index: 99;
+}
+
+/* Header */
+.app-header {
+  position: absolute;
+  top: 20px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  z-index: 10;
+}
+
+.demo-title {
+  font-size: 24px;
+  color: #ff00ff;
+  text-shadow: 2px 2px #00ffff, 4px 4px #000;
+  letter-spacing: 4px;
+  margin-bottom: 10px;
+}
+
+.demo-subtitle {
+  font-size: 10px;
+  color: #00ffff;
+  text-shadow: 1px 1px #000;
+  letter-spacing: 2px;
+}
+
+/* Demo Scene */
+.demo-scene {
+  width: 100%;
+  height: 100%;
+}
+
+/* Controls */
+.controls {
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+.audio-player {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.drop-zone {
+  background: rgba(255, 0, 255, 0.1);
+  border: 2px dashed #ff00ff;
+  padding: 30px 50px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.drop-zone:hover {
+  background: rgba(255, 0, 255, 0.2);
+  border-color: #00ffff;
+}
+
+.drop-zone p {
+  font-size: 10px;
+  color: #ff00ff;
+  margin-bottom: 10px;
+}
+
+.file-label {
+  display: inline-block;
+  padding: 10px 20px;
+  background: #ff00ff;
+  color: #000;
+  font-size: 10px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.file-label:hover {
+  background: #00ffff;
+}
+
+.file-name {
+  font-size: 8px;
+  color: #00ffff;
+  margin-top: 10px;
+}
+
+.play-button {
+  padding: 12px 30px;
+  background: #00ffff;
+  color: #000;
+  border: none;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-shadow: none;
+  min-width: 280px;
+}
+
+.play-button:hover {
+  background: #ff00ff;
+  transform: scale(1.05);
+}
+
+.controls-hint {
+  font-size: 8px;
+  color: #00ffff;
+  margin-top: 10px;
+  text-align: center;
+  opacity: 0.7;
+}
+
+/* Footer */
+.app-footer {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  z-index: 10;
+}
+
+.app-footer p {
+  font-size: 10px;
+  color: #00ff00;
+  text-shadow: 1px 1px #000;
+}

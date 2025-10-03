@@ -1,0 +1,34 @@
+.scene-info {
+  position: absolute;
+  top: 80px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 15px 20px;
+  border: 2px solid #00ffff;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  color: #00ffff;
+  z-index: 10;
+  min-width: 200px;
+  backdrop-filter: blur(5px);
+}
+
+.scene-info-line {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.scene-info-line:last-child {
+  margin-bottom: 0;
+}
+
+.scene-info-label {
+  color: #ff00ff;
+  margin-right: 15px;
+}
+
+.scene-info-value {
+  color: #00ffff;
+  text-align: right;
+}
