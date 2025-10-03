@@ -50,7 +50,7 @@ A retro Amiga-style demoscene experience built with React, Three.js, and WebGL s
 
 ```bash
 # Clone the repository
-git clone https://github.com/magnusj/phrenetic.net.git
+git clone https://github.com/yourusername/16bit-demo-2025.git
 cd 16bit-demo-2025
 
 # Install dependencies
@@ -177,7 +177,7 @@ This project is open source and available under the MIT License.
 
 - Inspired by classic Amiga demoscene productions
 - Built with React Three Fiber and Three.js
-- Music: [Add your music credits here]
+- Music: Original compositions by PHRENETiC.NET
 
 ## 🌐 Links
 

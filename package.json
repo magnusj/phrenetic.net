@@ -1,7 +1,6 @@
 {
-  "name": "16bit-demo-2025",
-  "private": true,
-  "version": "0.0.0",
+  "name": "phrenetic.net",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
