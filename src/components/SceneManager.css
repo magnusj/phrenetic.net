@@ -84,3 +84,24 @@
   background: linear-gradient(90deg, #ff00ff, #00ffff);
   transition: width 0.1s linear;
 }
+
+/* Mobile positioning: move scene indicator to bottom */
+@media (max-width: 768px) {
+  .scene-indicator {
+    top: auto;
+    bottom: 20px;
+    right: 50%;
+    transform: translateX(50%);
+    align-items: center;
+  }
+
+  .scene-dots {
+    justify-content: center;
+    max-width: 90vw;
+  }
+
+  .scene-progress-bar {
+    width: 90vw;
+    max-width: 350px;
+  }
+}

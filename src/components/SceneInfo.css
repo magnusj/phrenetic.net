@@ -32,3 +32,24 @@
   color: #00ffff;
   text-align: right;
 }
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .scene-info {
+    top: 60px;
+    right: 10px;
+    left: 10px;
+    font-size: 7px;
+    padding: 10px 15px;
+    min-width: auto;
+    max-width: calc(100vw - 20px);
+  }
+
+  .scene-info-line {
+    margin-bottom: 6px;
+  }
+
+  .scene-info-label {
+    margin-right: 10px;
+  }
+}

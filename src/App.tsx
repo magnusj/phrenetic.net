@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useMemo } from 'react';
 import { SceneManager } from './components/SceneManager';
 import { useAudioAnalyzer } from './hooks/useAudioAnalyzer';
 import { createScenes } from './config/scenes';
+import { SceneInfoProvider } from './contexts/SceneInfoContext';
 import type { AudioAnalysisData } from './types/audio';
 import './App.css';
 
@@ -24,6 +25,25 @@ function App() {
   }, [moireAudioData]);
 
   const scenes = useMemo(() => createScenes(null, moireAudioDataRef), []);
+
+  // Lock screen orientation to portrait on mobile devices
+  useEffect(() => {
+    const lockOrientation = async () => {
+      try {
+        // Check if screen orientation API is available
+        // Type assertion needed as lock() is not in standard TS types (experimental API)
+        const orientation = screen.orientation as any;
+        if (orientation && orientation.lock) {
+          await orientation.lock('portrait');
+        }
+      } catch (err) {
+        // Orientation lock failed or not supported - silently ignore
+        // This is expected on desktop and some browsers
+      }
+    };
+
+    lockOrientation();
+  }, []);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -227,28 +247,30 @@ function App() {
   };
 
   return (
-    <div className="app">
-      <audio ref={audioRef} />
-      <audio ref={moireAudioRef} />
-      <div className="scanlines"></div>
-      <div className="crt-overlay"></div>
+    <SceneInfoProvider>
+      <div className="app">
+        <audio ref={audioRef} />
+        <audio ref={moireAudioRef} />
+        <div className="scanlines"></div>
+        <div className="crt-overlay"></div>
 
-      {/* Show header only when not on title screen */}
-      {currentScene > 0 && (
-        <header className="app-header">
-          <h1 className="demo-title">PHRENETiC.NET</h1>
-          <p className="demo-subtitle">16-BIT MEMORIES • 2025</p>
-        </header>
-      )}
+        {/* Show header only when not on title screen */}
+        {currentScene > 0 && (
+          <header className="app-header">
+            <h1 className="demo-title">PHRENETiC.NET</h1>
+            <p className="demo-subtitle">16-BIT MEMORIES • 2025</p>
+          </header>
+        )}
 
-      <SceneManager
-        scenes={scenes}
-        audioData={currentScene === 21 ? moireAudioData : audioData}
-        isPlaying={isPlaying}
-        onStartDemo={handleStartDemo}
-        onSceneChange={setCurrentScene}
-      />
-    </div>
+        <SceneManager
+          scenes={scenes}
+          audioData={currentScene === 21 ? moireAudioData : audioData}
+          isPlaying={isPlaying}
+          onStartDemo={handleStartDemo}
+          onSceneChange={setCurrentScene}
+        />
+      </div>
+    </SceneInfoProvider>
   );
 }
 

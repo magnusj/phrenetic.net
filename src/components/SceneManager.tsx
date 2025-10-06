@@ -1,5 +1,8 @@
 import { useState, useEffect, type ReactNode, cloneElement, isValidElement, useRef } from 'react';
 import type { AudioAnalysisData } from '../types/audio';
+import { useTouchGestures } from '../hooks/useTouchGestures';
+import { useTapDetection } from '../hooks/useTapDetection';
+import { useSceneInfo } from '../contexts/SceneInfoContext';
 import './SceneManager.css';
 
 export interface Scene {
@@ -22,6 +25,48 @@ export const SceneManager = ({ scenes, audioData, isPlaying, onStartDemo, onScen
   const [transitioning, setTransitioning] = useState(false);
   const [demoStarted, setDemoStarted] = useState(false);
   const isTransitionScheduledRef = useRef(false);
+  const lastTimeRef = useRef<number>(performance.now());
+  const { toggleSceneInfoVisibility } = useSceneInfo();
+
+  // Touch gesture handlers for scene navigation
+  const handleSwipeLeft = () => {
+    if (!isTransitionScheduledRef.current && demoStarted) {
+      isTransitionScheduledRef.current = true;
+      setTransitioning(true);
+      setTimeout(() => {
+        setCurrentSceneIndex((prevIndex) => (prevIndex + 1) % scenes.length);
+        setSceneTime(0);
+        setTransitioning(false);
+        isTransitionScheduledRef.current = false;
+      }, 300);
+    }
+  };
+
+  const handleSwipeRight = () => {
+    if (!isTransitionScheduledRef.current && demoStarted) {
+      isTransitionScheduledRef.current = true;
+      setTransitioning(true);
+      setTimeout(() => {
+        setCurrentSceneIndex((prevIndex) => (prevIndex - 1 + scenes.length) % scenes.length);
+        setSceneTime(0);
+        setTransitioning(false);
+        isTransitionScheduledRef.current = false;
+      }, 300);
+    }
+  };
+
+  const touchGestures = useTouchGestures({
+    onSwipeLeft: handleSwipeLeft,
+    onSwipeRight: handleSwipeRight,
+  });
+
+  const tapDetection = useTapDetection({
+    onTap: () => {
+      if (demoStarted) {
+        toggleSceneInfoVisibility();
+      }
+    },
+  });
 
   // Notify parent about scene changes
   useEffect(() => {
@@ -52,9 +97,15 @@ export const SceneManager = ({ scenes, audioData, isPlaying, onStartDemo, onScen
     // Only advance timer if demo has started AND music is playing AND not transitioning
     if (!isPlaying || !demoStarted || transitioning) return;
 
-    const interval = setInterval(() => {
+    let animationFrameId: number;
+    lastTimeRef.current = performance.now(); // Reset on state change
+
+    const animate = (timestamp: number) => {
+      const delta = (timestamp - lastTimeRef.current) / 1000; // Convert to seconds
+      lastTimeRef.current = timestamp;
+
       setSceneTime((prev) => {
-        const newTime = prev + 0.1;
+        const newTime = prev + delta;
         const currentScene = scenes[currentSceneIndex];
 
         if (newTime >= currentScene.duration && !isTransitionScheduledRef.current) {
@@ -67,14 +118,18 @@ export const SceneManager = ({ scenes, audioData, isPlaying, onStartDemo, onScen
             setTransitioning(false);
             isTransitionScheduledRef.current = false; // Reset flag
           }, 300); // Fade duration
-          return 0;
+          return currentScene.duration; // Cap at duration to prevent overshoot
         }
 
         return newTime;
       });
-    }, 100);
 
-    return () => clearInterval(interval);
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    animationFrameId = requestAnimationFrame(animate);
+
+    return () => cancelAnimationFrame(animationFrameId);
   }, [isPlaying, demoStarted, transitioning, currentSceneIndex, scenes]);
 
   // Manual scene skip with arrow keys only
@@ -140,8 +195,26 @@ export const SceneManager = ({ scenes, audioData, isPlaying, onStartDemo, onScen
     return content;
   };
 
+  // Merge touch handlers from both hooks
+  const mergedHandlers = {
+    onTouchStart: (e: React.TouchEvent) => {
+      touchGestures.onTouchStart(e);
+      tapDetection.onTouchStart(e);
+    },
+    onTouchMove: touchGestures.onTouchMove,
+    onTouchEnd: (e: React.TouchEvent) => {
+      touchGestures.onTouchEnd(e);
+      tapDetection.onTouchEnd(e);
+    },
+    onMouseDown: tapDetection.onMouseDown,
+    onMouseUp: tapDetection.onMouseUp,
+  };
+
   return (
-    <div className="scene-manager">
+    <div
+      className="scene-manager"
+      {...mergedHandlers}
+    >
       <div className={`scene-content ${transitioning ? 'fade-out' : 'fade-in'}`}>
         {renderSceneContent()}
       </div>

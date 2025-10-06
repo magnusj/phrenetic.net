@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useSceneInfo } from '../contexts/SceneInfoContext';
 import './SceneInfo.css';
 
 export interface SceneStat {
@@ -13,6 +14,7 @@ interface SceneInfoProps {
 
 export const SceneInfo = ({ name, stats }: SceneInfoProps) => {
   const [fps, setFps] = useState(0);
+  const { isSceneInfoVisible } = useSceneInfo();
 
   useEffect(() => {
     let animationFrameId: number;
@@ -39,6 +41,10 @@ export const SceneInfo = ({ name, stats }: SceneInfoProps) => {
       cancelAnimationFrame(animationFrameId);
     };
   }, []);
+
+  if (!isSceneInfoVisible) {
+    return null;
+  }
 
   return (
     <div className="scene-info">

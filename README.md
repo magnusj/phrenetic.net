@@ -2,6 +2,12 @@
 
 A retro Amiga-style demoscene experience built with React, Three.js, and WebGL shaders. This project recreates classic 16-bit demo effects with modern web technologies and audio reactivity.
 
+## 📋 Project Status
+
+- **[CHANGELOG.md](CHANGELOG.md)** - Version history and release notes
+- **[TODO.md](TODO.md)** - Development roadmap and planned features
+- **Latest Release**: v1.0.1 - Mobile optimization and timing fixes
+
 ## 🎮 Features
 
 ### Classic Demo Effects
@@ -38,9 +44,11 @@ A retro Amiga-style demoscene experience built with React, Three.js, and WebGL s
 - **React Three Fiber** - Declarative 3D with React
 - **Custom GLSL Shaders** - Hand-crafted vertex and fragment shaders
 - **Scene Management** - Automatic scene transitions with progress indicators
-- **SceneInfo Overlay** - Real-time stats display for each effect
+- **SceneInfo Overlay** - Real-time stats display for each effect (toggleable via tap/click)
+- **Mobile Optimized** - Touch gestures (swipe navigation), responsive layout, portrait lock
+- **Frame-rate Independent** - All animations use delta time for consistent speed across displays
 - **CRT Effects** - Scanlines and screen curvature for authentic retro feel
-- **Performance Optimized** - Ref-based architecture prevents unnecessary re-renders
+- **Performance Optimized** - Memoized contexts and ref-based architecture prevents unnecessary re-renders
 - **Production Ready** - Docker deployment with nginx, gzip compression, and security headers
 
 ## 🚀 Getting Started
@@ -112,9 +120,16 @@ The Docker setup is compatible with various deployment platforms including:
 
 ## 🎹 Controls
 
+### Desktop
 - **SPACE** - Play/Pause music (when demo is running)
 - **Arrow Left/Right** - Skip to previous/next scene
+- **Click** - Toggle SceneInfo visibility
 - **D** - Toggle audio debug overlay (scene 21 only)
+
+### Mobile
+- **Swipe Left** - Next scene
+- **Swipe Right** - Previous scene
+- **Tap** - Toggle SceneInfo visibility
 
 ## 🎵 Audio Setup
 
@@ -135,9 +150,14 @@ src/
 │   ├── SceneInfo.tsx      # Effect info display
 │   ├── AudioPlayer.tsx    # Audio playback component
 │   └── DemoScene.tsx      # Demo scene wrapper
+├── contexts/
+│   └── SceneInfoContext.tsx  # SceneInfo visibility state
 ├── shaders/               # GLSL shader code
 ├── hooks/
-│   └── useAudioAnalyzer.ts   # Web Audio API integration
+│   ├── useAudioAnalyzer.ts   # Web Audio API integration
+│   ├── useIsMobile.ts        # Mobile device detection
+│   ├── useTouchGestures.ts   # Swipe gesture detection
+│   └── useTapDetection.ts    # Tap/click detection
 ├── config/
 │   └── scenes.tsx         # Scene configuration
 ├── types/
@@ -152,6 +172,8 @@ public/                    # Public assets
 
 Dockerfile                 # Docker build configuration
 nginx.conf                 # Nginx server configuration
+CHANGELOG.md               # Version history
+TODO.md                    # Development roadmap
 ```
 
 ## 🎨 Creating Custom Effects
@@ -168,7 +190,7 @@ export const myVertexShader = `...`;
 export const myFragmentShader = `...`;
 
 // src/components/effects/MyEffect.tsx
-export const MyEffect = ({ audioData }: { audioData: AudioData | null }) => {
+export const MyEffect = ({ audioData }: { audioData: AudioAnalysisData | null }) => {
   // Your effect logic
 };
 
@@ -189,7 +211,7 @@ export const MyEffect = ({ audioData }: { audioData: AudioData | null }) => {
 Effects can access real-time audio data:
 
 ```tsx
-interface AudioData {
+interface AudioAnalysisData {
   frequencyData: Uint8Array;  // Frequency spectrum (0-255)
   timeDomainData: Uint8Array; // Waveform data
   bass: number;               // Bass level (0-1)
