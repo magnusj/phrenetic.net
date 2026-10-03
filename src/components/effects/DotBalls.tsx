@@ -2,6 +2,7 @@ import { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import type { AudioAnalysisData } from '../../types/audio';
+import { createSeededRandom } from '../../utils/seededRandom';
 
 interface DotBallsProps {
   audioData: AudioAnalysisData | null;
@@ -13,6 +14,8 @@ export const DotBalls = ({ audioData: _audioData }: DotBallsProps) => {
 
   // Create sphere of particles
   const particles = useMemo(() => {
+    // Seeded, so the dot colours are the same on every render
+    const random = createSeededRandom(1987);
     const particleCount = 500;
     const radius = 2;
     const positions = new Float32Array(particleCount * 3);
@@ -42,7 +45,7 @@ export const DotBalls = ({ audioData: _audioData }: DotBallsProps) => {
       positions[i3 + 2] = z;
 
       // Random color from palette
-      const color = dotColors[Math.floor(Math.random() * dotColors.length)];
+      const color = dotColors[Math.floor(random() * dotColors.length)];
       colors[i3] = color.r;
       colors[i3 + 1] = color.g;
       colors[i3 + 2] = color.b;

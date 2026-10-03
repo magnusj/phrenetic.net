@@ -30,7 +30,7 @@ export const SceneManager = ({ scenes, audioData, isPlaying, onStartDemo, onScen
   const [transitioning, setTransitioning] = useState(false);
   const [demoStarted, setDemoStarted] = useState(false);
   const isTransitionScheduledRef = useRef(false);
-  const lastTimeRef = useRef<number>(performance.now());
+  const lastTimeRef = useRef(0); // set when the timer starts
   const { toggleSceneInfoVisibility } = useSceneInfo();
 
   // Touch gesture handlers for scene navigation

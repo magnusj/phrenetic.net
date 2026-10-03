@@ -2,6 +2,7 @@ import { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import type { AudioAnalysisData } from '../../types/audio';
+import { createSeededRandom } from '../../utils/seededRandom';
 
 interface StarfieldProps {
   audioData: AudioAnalysisData | null;
@@ -12,6 +13,8 @@ export const Starfield = ({ audioData: _audioData }: StarfieldProps) => {
 
   // Create stars
   const stars = useMemo(() => {
+    // Seeded, so the stars are the same on every render
+    const random = createSeededRandom(1985);
     const starCount = 1000;
     const positions = new Float32Array(starCount * 3);
     const colors = new Float32Array(starCount * 3);
@@ -28,15 +31,15 @@ export const Starfield = ({ audioData: _audioData }: StarfieldProps) => {
       const i3 = i * 3;
 
       // Random position in 3D space
-      positions[i3] = (Math.random() - 0.5) * 100;     // x
-      positions[i3 + 1] = (Math.random() - 0.5) * 100; // y
-      positions[i3 + 2] = -Math.random() * 100;        // z (behind camera)
+      positions[i3] = (random() - 0.5) * 100;     // x
+      positions[i3 + 1] = (random() - 0.5) * 100; // y
+      positions[i3 + 2] = -random() * 100;        // z (behind camera)
 
       // Random speed (creates depth illusion)
-      speeds[i] = 0.1 + Math.random() * 0.3;
+      speeds[i] = 0.1 + random() * 0.3;
 
       // Random color from Amiga palette
-      const color = starColors[Math.floor(Math.random() * starColors.length)];
+      const color = starColors[Math.floor(random() * starColors.length)];
       colors[i3] = color.r;
       colors[i3 + 1] = color.g;
       colors[i3 + 2] = color.b;

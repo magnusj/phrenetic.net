@@ -1,14 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { MoirePatterns, AudioDebugOverlay } from '../effects/MoirePatterns';
 import { SceneInfo } from '../SceneInfo';
-import type { AudioAnalysisData } from '../../types/audio';
+import { MoireAudioContext } from '../../contexts/moireAudio';
 
-interface MoirePatternsSceneProps {
-  audioDataRef: React.RefObject<AudioAnalysisData | null>;
-}
-
-export const MoirePatternsScene = ({ audioDataRef }: MoirePatternsSceneProps) => {
+export const MoirePatternsScene = () => {
+  const audioDataRef = useContext(MoireAudioContext);
   const [showDebug, setShowDebug] = useState(false);
 
   // Toggle debug overlay with 'D' key
