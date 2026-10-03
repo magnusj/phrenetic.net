@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { C64Screen } from '../c64/C64Screen';
 import { createBootScreen } from '../c64/programs/bootScreen';
+import { demoAudio } from '../c64/demoAudio';
 import './DemoSelector.css';
 
 export const DemoSelector = () => {
@@ -20,7 +21,8 @@ export const DemoSelector = () => {
           <span className="demo-card-tagline">16-BIT MEMORIES</span>
         </a>
 
-        <a className="demo-card demo-card-c64" href="#/c64">
+        {/* Unlocking audio in this click lets the C64 demo start loading without another click */}
+        <a className="demo-card demo-card-c64" href="#/c64" onClick={() => demoAudio.unlock()}>
           <div className="demo-card-preview">
             <C64Screen program={c64Preview} />
           </div>
