@@ -10,6 +10,8 @@ const MUSIC = {
   forYou: '/c64/for-you.mp3',
 } as const;
 
+const EFFECTS_VOLUME = 0.5;
+
 export type EffectName = keyof typeof EFFECTS;
 export type MusicName = keyof typeof MUSIC;
 
@@ -19,6 +21,7 @@ export type MusicName = keyof typeof MUSIC;
  */
 export class DemoAudio {
   private ctx: AudioContext | null = null;
+  private effectsGain: GainNode | null = null;
   private readonly effects = new Map<EffectName, Promise<AudioBuffer>>();
   private readonly music = new Map<MusicName, HTMLAudioElement>();
   private playingEffect: AudioBufferSourceNode | null = null;
@@ -29,6 +32,9 @@ export class DemoAudio {
     const ctx = new AudioContext();
     this.ctx = ctx;
     void ctx.resume();
+    this.effectsGain = ctx.createGain();
+    this.effectsGain.gain.value = EFFECTS_VOLUME;
+    this.effectsGain.connect(ctx.destination);
 
     for (const [name, url] of Object.entries(EFFECTS) as [EffectName, string][]) {
       this.effects.set(
@@ -55,11 +61,12 @@ export class DemoAudio {
   async playEffect(name: EffectName) {
     const ctx = this.ctx;
     const buffer = await this.effects.get(name)?.catch(() => null);
-    if (!ctx || !buffer || ctx.state === 'closed') return;
+    const gain = this.effectsGain;
+    if (!ctx || !gain || !buffer || ctx.state === 'closed') return;
     this.stopEffect();
     const source = ctx.createBufferSource();
     source.buffer = buffer;
-    source.connect(ctx.destination);
+    source.connect(gain);
     source.start();
     this.playingEffect = source;
   }
@@ -90,5 +97,6 @@ export class DemoAudio {
     this.playingMusic = null;
     void this.ctx?.close();
     this.ctx = null;
+    this.effectsGain = null;
   }
 }
