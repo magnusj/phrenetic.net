@@ -1,5 +1,6 @@
 import { createLoadSequence } from './loadSequence';
 import { createLogoPart } from './logoPart';
+import { createMultiplexerPart } from './multiplexerPart';
 import type { DemoAudio, MusicName } from '../demoAudio';
 import type { C64Program, Vic } from '../vic';
 
@@ -16,7 +17,10 @@ interface PartEntry {
 const seconds = (s: number) => Math.round(s * 50);
 
 // Parts after the load sequence, in order. The last part keeps running when it finishes.
-const PARTS: PartEntry[] = [{ create: () => createLogoPart(seconds(20)), music: 'alive' }];
+const PARTS: PartEntry[] = [
+  { create: () => createLogoPart(seconds(20)), music: 'alive' },
+  { create: () => createMultiplexerPart(seconds(20)) },
+];
 
 /** The whole C64 demo: load sequence, then each part in turn, starting music where a part asks for it. */
 export const createC64Demo = (audio: DemoAudio): C64Program & { start(): void } => {
