@@ -1,0 +1,7 @@
+.c64-screen {
+  display: block;
+  /* PAL C64 pixels are slightly narrower than tall (aspect 0.9365), so 384x272 displays at ~1.322:1 */
+  aspect-ratio: 1.322;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}

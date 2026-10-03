@@ -1,0 +1,12 @@
+.c64-demo {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+}
+
+.c64-demo-screen {
+  width: min(100vw, calc(100dvh * 1.322));
+}
