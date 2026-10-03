@@ -51,6 +51,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Scene timer now uses requestAnimationFrame for frame-rate independent timing
 - Context value objects are now memoized for optimal performance
 - All ESLint errors and warnings fixed; `_`-prefixed unused parameters are allowed
+- Upgraded to Vite 8 (Rolldown), Three.js 0.186, React 19.3, ESLint 10 with the React Compiler
+  lint rules, and TypeScript 6.0; console calls are still stripped from production builds
+- Docker builds on Node 24 (Node 20 is end-of-life) and ignores host `node_modules` via
+  `.dockerignore`
 
 ### Security
 - Fixed 24 vulnerabilities in transitive dev dependencies (19 high, 4 moderate, 1 low) with
