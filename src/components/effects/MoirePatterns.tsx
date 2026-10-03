@@ -25,7 +25,6 @@ export const MoirePatterns = ({ audioDataRef }: MoirePatternsProps) => {
   useEffect(() => {
     console.log('[MoirePatterns] Component mounted!');
     console.log('[MoirePatterns] audioDataRef on mount:', audioDataRef.current ? 'EXISTS' : 'NULL');
-    console.log('[MoirePatterns] viewport:', viewport);
     console.log('[MoirePatterns] meshRef:', meshRef.current);
     console.log('[MoirePatterns] materialRef:', materialRef.current);
 

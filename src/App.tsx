@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { SceneManager } from './components/SceneManager';
 import { useAudioAnalyzer } from './hooks/useAudioAnalyzer';
 import { createScenes } from './config/scenes';
@@ -32,11 +32,13 @@ function App() {
       try {
         // Check if screen orientation API is available
         // Type assertion needed as lock() is not in standard TS types (experimental API)
-        const orientation = screen.orientation as any;
+        const orientation = screen.orientation as ScreenOrientation & {
+          lock?: (orientation: string) => Promise<void>;
+        };
         if (orientation && orientation.lock) {
           await orientation.lock('portrait');
         }
-      } catch (err) {
+      } catch {
         // Orientation lock failed or not supported - silently ignore
         // This is expected on desktop and some browsers
       }
@@ -95,7 +97,7 @@ function App() {
     };
   }, []);
 
-  const handlePlayPause = async () => {
+  const handlePlayPause = useCallback(async () => {
     const audio = audioRef.current;
     if (!audio) {
       console.error('Audio element not found');
@@ -125,7 +127,7 @@ function App() {
     } else {
       audio.pause();
     }
-  };
+  }, [audioElement]);
 
   // Space bar to play/pause (only when demo is running - scene > 0)
   useEffect(() => {
@@ -140,7 +142,7 @@ function App() {
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [audioElement, currentScene]); // Include audioElement and currentScene in dependencies
+  }, [currentScene, handlePlayPause]);
 
   // DEBUG: Log audio data states
   useEffect(() => {
