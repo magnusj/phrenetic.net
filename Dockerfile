@@ -1,6 +1,6 @@
 # Multi-stage build for Amiga 500 Demo
 # Stage 1: Build the Vite app
-FROM node:20-alpine AS builder
+FROM node:24-alpine AS builder
 
 WORKDIR /app
 
