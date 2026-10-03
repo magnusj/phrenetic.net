@@ -16,7 +16,7 @@
 .demo-selector-title {
   font-size: clamp(24px, 6vw, 48px);
   letter-spacing: 4px;
-  color: #ff8800;
+  color: #fff;
   text-shadow: 4px 4px 0 #880044;
 }
 
@@ -56,7 +56,7 @@
 
 .demo-card-amiga:hover,
 .demo-card-amiga:focus-visible {
-  border-color: #ff8800;
+  border-color: #fff;
 }
 
 .demo-card-c64:hover,
@@ -96,4 +96,8 @@
     flex-direction: column;
     gap: 20px;
   }
+}
+
+.demo-card-pixelated {
+  image-rendering: pixelated;
 }

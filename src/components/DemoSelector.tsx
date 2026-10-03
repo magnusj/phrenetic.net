@@ -14,7 +14,7 @@ export const DemoSelector = () => {
       <div className="demo-selector-cards">
         <a className="demo-card demo-card-amiga" href="#/amiga">
           <div className="demo-card-preview">
-            <img src="/amiga-computer.jpg" alt="Amiga 500" />
+            <img className="demo-card-pixelated" src="/amiga-workbench.gif" alt="Amiga Workbench 1.2 boot screen" />
           </div>
           <span className="demo-card-name">AMIGA 500</span>
           <span className="demo-card-tagline">16-BIT MEMORIES</span>
