@@ -10,15 +10,22 @@ export interface LoadSequence extends C64Program {
   readonly finished: boolean;
 }
 
+/** Hooks for things outside the C64 screen, such as the drive sound. */
+export interface LoadSequenceEvents {
+  onSearch?: () => void;
+  onLoaderStart?: () => void;
+  onFinished?: () => void;
+}
+
 type Step = { wait: number; run: (vic: Vic) => void };
 
-const LOADER_FRAMES = 220;
+const LOADER_FRAMES = 340; // ~6.8 s, the length of the loader drive sound
 const BAR_ROW = 14;
 const BAR_START = 4;
 const BAR_LENGTH = 32;
 const STRIPE_COLORS = [BLACK, DARK_GREY, GREY, LIGHT_GREY, LIGHT_BLUE, CYAN, WHITE];
 
-export const createLoadSequence = (): LoadSequence => {
+export const createLoadSequence = (events: LoadSequenceEvents = {}): LoadSequence => {
   let editor: ScreenEditor;
   let started = false;
   let finished = false;
@@ -40,6 +47,7 @@ export const createLoadSequence = (): LoadSequence => {
 
   const startLoader = (vic: Vic) => {
     loading = true;
+    events.onLoaderStart?.();
     vic.ram.fill(0x20, SCREEN_RAM, SCREEN_RAM + COLUMNS * ROWS);
     vic.poke(0xd020, BLACK);
     vic.poke(0xd021, BLACK);
@@ -61,7 +69,13 @@ export const createLoadSequence = (): LoadSequence => {
         ...typeSteps('LOAD"*",8,1'),
         { wait: 18, run: () => { cursorOn = false; editor.newLine(); } },
         { wait: 2, run: () => editor.newLine() },
-        { wait: 1, run: () => editor.printLine('SEARCHING FOR *') },
+        {
+          wait: 1,
+          run: () => {
+            editor.printLine('SEARCHING FOR *');
+            events.onSearch?.();
+          },
+        },
         { wait: 70, run: () => editor.printLine('LOADING') },
         { wait: 140, run: () => { editor.printLine('READY.'); cursorOn = true; } },
         ...typeSteps('RUN'),
@@ -89,6 +103,7 @@ export const createLoadSequence = (): LoadSequence => {
         for (let i = 0; i < filled; i++) vic.ram[SCREEN_RAM + BAR_ROW * COLUMNS + BAR_START + i] = 0xa0;
         if (loaderFrame >= LOADER_FRAMES) {
           finished = true;
+          events.onFinished?.();
           vic.poke(0xd020, BLACK);
           vic.ram.fill(0x20, SCREEN_RAM, SCREEN_RAM + COLUMNS * ROWS);
         }
