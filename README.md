@@ -104,7 +104,7 @@ out. "For You" starts with the FLI picture and runs to the end.
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js 18+
+- Node.js 22.12+ (24 LTS recommended; Vite 8 needs 20.19+ or 22.12+)
 - npm or yarn
 - Docker (optional, for deployment)
 
