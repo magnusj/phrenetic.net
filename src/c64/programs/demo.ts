@@ -6,6 +6,7 @@ import { createPlasmaPart } from './plasmaPart';
 import { createTwisterPart } from './twisterPart';
 import { createRotozoomerPart, createTunnelPart } from './chunkyParts';
 import { createVectorPart } from './vectorPart';
+import { createScrollWorldPart } from './scrollWorldPart';
 import type { DemoAudio, MusicName } from '../demoAudio';
 import type { C64Program, Vic } from '../vic';
 
@@ -31,6 +32,7 @@ const PARTS: PartEntry[] = [
   { create: () => createRotozoomerPart(seconds(11)) },
   { create: () => createTunnelPart(seconds(11)) },
   { create: () => createVectorPart(seconds(22)) },
+  { create: () => createScrollWorldPart(seconds(21)) },
 ];
 
 /** The whole C64 demo: load sequence, then each part in turn, starting music where a part asks for it. */
