@@ -8,13 +8,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Commodore 64 demo at `#/c64`, about 6 minutes long, built to the real machine's limits
+  - Cycle-stepped PAL VIC-II model: bad lines, idle state, border flip-flops, sprite DMA and
+    per-cycle register writes, so effects only work when done the way the real chip requires
+  - Pepto palette, an original C64-style character set, 50 Hz PAL timing and pixel aspect
+  - Disk load sequence: typed `LOAD"*",8,1` and `RUN`, an IRQ loader, and 1541 drive sounds
+  - Logo with tech-tech, FLD bounce, raster bars and a bottom-border sprite scroller
+  - 80-ball sprite multiplexer with the top and bottom borders open
+  - DYCP scroller over raster bars, using a charset split for an 80 px wave
+  - Bitmap plasma and an FPP twister
+  - Chunky 4x4 rotozoomer and tunnel
+  - Double-buffered filled 3D vectors
+  - Scrolling world with a sprite ship
+  - FLI sunset picture
+  - Endpart with all four borders open, a sprite sine scroller, credits and greetings, then exit
+    to the BASIC `READY.` screen
+  - Music: "Alive" and "For You" by Chock of Maniax, used with permission, as 6581R4 recordings
+    from Stone Oakvalley's Authentic SID Collection
+- Start page at `/` for choosing between the Amiga and C64 demos, with a live C64 preview and the
+  Workbench 1.2 boot screen for the Amiga; the demos live at `#/amiga` and `#/c64`, and Esc goes back
+- Clicking the C64 card starts loading straight away; opening `#/c64` directly asks for a key press
+- Pixel-art favicon replacing the default Vite icon
 - Mobile-optimized controls and layout
   - Touch gesture support: swipe left/right for scene navigation
   - Tap detection to toggle SceneInfo visibility
   - Screen orientation locked to portrait on mobile devices
   - Scene progress indicator relocated to bottom center on mobile
   - Responsive SceneInfo sizing for small screens
-- Changelog modal on start screen (coming soon)
 
 ### Fixed
 - Scene timing accuracy on high refresh rate displays
@@ -30,6 +50,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Scene timer now uses requestAnimationFrame for frame-rate independent timing
 - Context value objects are now memoized for optimal performance
+- All ESLint errors and warnings fixed; `_`-prefixed unused parameters are allowed
+
+### Security
+- Fixed 24 vulnerabilities in transitive dev dependencies (19 high, 4 moderate, 1 low) with
+  `npm audit fix`
 
 ## [1.0.1] - 2025-10-06
 
