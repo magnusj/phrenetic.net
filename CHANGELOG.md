@@ -23,6 +23,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - React Three Fiber animation freeze issue
   - Memoized SceneInfoContext value to prevent excessive re-renders
   - All Canvas-based effects now animate correctly
+- Tap to toggle SceneInfo could fire twice on touch devices
+  - Touch handlers and emulated mouse events both triggered the toggle
+  - Tap detection now uses pointer events (capture phase) only
 
 ### Changed
 - Scene timer now uses requestAnimationFrame for frame-rate independent timing

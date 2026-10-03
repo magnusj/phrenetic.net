@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, useMemo, type ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, useMemo, useCallback, type ReactNode } from 'react';
 import { useIsMobile } from '../hooks/useIsMobile';
 
 interface SceneInfoContextType {
@@ -17,13 +17,13 @@ export const SceneInfoProvider = ({ children }: { children: ReactNode }) => {
     setIsSceneInfoVisible(!isMobile);
   }, [isMobile]);
 
-  const toggleSceneInfoVisibility = () => {
+  const toggleSceneInfoVisibility = useCallback(() => {
     setIsSceneInfoVisible(prev => !prev);
-  };
+  }, []);
 
   const value = useMemo(
     () => ({ isSceneInfoVisible, toggleSceneInfoVisibility }),
-    [isSceneInfoVisible]
+    [isSceneInfoVisible, toggleSceneInfoVisibility]
   );
 
   return (

@@ -195,26 +195,18 @@ export const SceneManager = ({ scenes, audioData, isPlaying, onStartDemo, onScen
     return content;
   };
 
-  // Merge touch handlers from both hooks
-  const mergedHandlers = {
-    onTouchStart: (e: React.TouchEvent) => {
-      touchGestures.onTouchStart(e);
-      tapDetection.onTouchStart(e);
-    },
+  // Touch events drive swipes; pointer events (mouse + touch) drive taps.
+  // Capture phase so taps are seen before the Canvas handles them.
+  const gestureHandlers = {
+    onTouchStart: touchGestures.onTouchStart,
     onTouchMove: touchGestures.onTouchMove,
-    onTouchEnd: (e: React.TouchEvent) => {
-      touchGestures.onTouchEnd(e);
-      tapDetection.onTouchEnd(e);
-    },
-    onMouseDown: tapDetection.onMouseDown,
-    onMouseUp: tapDetection.onMouseUp,
+    onTouchEnd: touchGestures.onTouchEnd,
+    onPointerDownCapture: tapDetection.onPointerDown,
+    onPointerUpCapture: tapDetection.onPointerUp,
   };
 
   return (
-    <div
-      className="scene-manager"
-      {...mergedHandlers}
-    >
+    <div className="scene-manager" {...gestureHandlers}>
       <div className={`scene-content ${transitioning ? 'fade-out' : 'fade-in'}`}>
         {renderSceneContent()}
       </div>
