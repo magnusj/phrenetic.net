@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useSceneInfo } from '../contexts/SceneInfoContext';
+import { useSceneInfo } from '../hooks/useSceneInfo';
 import './SceneInfo.css';
 
 export interface SceneStat {

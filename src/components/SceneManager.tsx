@@ -2,13 +2,18 @@ import { useState, useEffect, type ReactNode, cloneElement, isValidElement, useR
 import type { AudioAnalysisData } from '../types/audio';
 import { useTouchGestures } from '../hooks/useTouchGestures';
 import { useTapDetection } from '../hooks/useTapDetection';
-import { useSceneInfo } from '../contexts/SceneInfoContext';
+import { useSceneInfo } from '../hooks/useSceneInfo';
 import './SceneManager.css';
 
 export interface Scene {
   id: string;
   duration: number; // seconds
   component: ReactNode;
+}
+
+// Props SceneManager may inject into a scene's component
+interface SceneInjectedProps {
+  onStartDemo?: () => void;
 }
 
 interface SceneManagerProps {
@@ -173,7 +178,7 @@ export const SceneManager = ({ scenes, audioData, isPlaying, onStartDemo, onScen
 
     // Only inject props for specific scenes that need them
     if (isValidElement(content)) {
-      const props: any = {};
+      const props: SceneInjectedProps = {};
 
       // Inject onStartDemo for title scene (scene 0)
       if (currentSceneIndex === 0) {
@@ -187,7 +192,7 @@ export const SceneManager = ({ scenes, audioData, isPlaying, onStartDemo, onScen
       // Only clone if we have props to inject
       if (Object.keys(props).length > 0) {
         console.log('[SceneManager renderScene] Cloning element with props:', Object.keys(props));
-        return cloneElement(content as React.ReactElement<any>, props);
+        return cloneElement(content as React.ReactElement<SceneInjectedProps>, props);
       }
     }
 

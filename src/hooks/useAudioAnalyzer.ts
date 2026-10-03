@@ -32,7 +32,8 @@ export const useAudioAnalyzer = (audioElement: HTMLAudioElement | null) => {
       console.log('[useAudioAnalyzer] Creating NEW audio context and analyzer for this element');
 
       // Create audio context and analyzer
-      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const audioContext = new (window.AudioContext ||
+        (window as typeof window & { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
       analyser = audioContext.createAnalyser();
       analyser.fftSize = 2048;
       analyser.smoothingTimeConstant = 0.8;

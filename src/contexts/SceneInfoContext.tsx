@@ -1,12 +1,6 @@
-import { createContext, useContext, useState, useEffect, useMemo, useCallback, type ReactNode } from 'react';
+import { useState, useEffect, useMemo, useCallback, type ReactNode } from 'react';
 import { useIsMobile } from '../hooks/useIsMobile';
-
-interface SceneInfoContextType {
-  isSceneInfoVisible: boolean;
-  toggleSceneInfoVisibility: () => void;
-}
-
-const SceneInfoContext = createContext<SceneInfoContextType | undefined>(undefined);
+import { SceneInfoContext } from './sceneInfo';
 
 export const SceneInfoProvider = ({ children }: { children: ReactNode }) => {
   const isMobile = useIsMobile();
@@ -31,12 +25,4 @@ export const SceneInfoProvider = ({ children }: { children: ReactNode }) => {
       {children}
     </SceneInfoContext.Provider>
   );
-};
-
-export const useSceneInfo = () => {
-  const context = useContext(SceneInfoContext);
-  if (!context) {
-    throw new Error('useSceneInfo must be used within SceneInfoProvider');
-  }
-  return context;
 };
