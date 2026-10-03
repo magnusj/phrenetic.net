@@ -13,6 +13,7 @@ interface AudioDebugValues {
   bass: number;
   bassHit: number;
   isHitting: boolean;
+  active: boolean;
 }
 
 export const MoirePatterns = ({ audioDataRef }: MoirePatternsProps) => {
@@ -154,6 +155,7 @@ export const AudioDebugOverlay = ({ audioDataRef }: { audioDataRef: React.RefObj
     bass: 0,
     bassHit: 0,
     isHitting: false,
+    active: false,
   });
 
   // Update debug values every frame
@@ -175,7 +177,10 @@ export const AudioDebugOverlay = ({ audioDataRef }: { audioDataRef: React.RefObj
           bass,
           bassHit,
           isHitting: bassAverage > threshold,
+          active: true,
         });
+      } else {
+        setDebugValues((prev) => (prev.active ? { ...prev, active: false } : prev));
       }
     }, 50); // Update 20 times per second
 
@@ -225,7 +230,7 @@ export const AudioDebugOverlay = ({ audioDataRef }: { audioDataRef: React.RefObj
         {debugValues.isHitting ? '🔥 HIT!' : '--- IDLE ---'}
       </div>
       <div style={{ marginTop: '8px', fontSize: '8px', color: '#888' }}>
-        AUDIO: {audioDataRef.current ? 'ACTIVE' : 'NULL'}
+        AUDIO: {debugValues.active ? 'ACTIVE' : 'NULL'}
       </div>
     </div>
   );

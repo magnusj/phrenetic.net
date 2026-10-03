@@ -3,6 +3,7 @@ import { SceneManager } from './components/SceneManager';
 import { useAudioAnalyzer } from './hooks/useAudioAnalyzer';
 import { createScenes } from './config/scenes';
 import { SceneInfoProvider } from './contexts/SceneInfoContext';
+import { MoireAudioContext } from './contexts/moireAudio';
 import type { AudioAnalysisData } from './types/audio';
 import './App.css';
 
@@ -24,7 +25,7 @@ function App() {
     moireAudioDataRef.current = moireAudioData;
   }, [moireAudioData]);
 
-  const scenes = useMemo(() => createScenes(null, moireAudioDataRef), []);
+  const scenes = useMemo(() => createScenes(null), []);
 
   // Lock screen orientation to portrait on mobile devices
   useEffect(() => {
@@ -264,13 +265,15 @@ function App() {
           </header>
         )}
 
-        <SceneManager
-          scenes={scenes}
-          audioData={currentScene === 21 ? moireAudioData : audioData}
-          isPlaying={isPlaying}
-          onStartDemo={handleStartDemo}
-          onSceneChange={setCurrentScene}
-        />
+        <MoireAudioContext value={moireAudioDataRef}>
+          <SceneManager
+            scenes={scenes}
+            audioData={currentScene === 21 ? moireAudioData : audioData}
+            isPlaying={isPlaying}
+            onStartDemo={handleStartDemo}
+            onSceneChange={setCurrentScene}
+          />
+        </MoireAudioContext>
       </div>
     </SceneInfoProvider>
   );

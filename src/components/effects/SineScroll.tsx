@@ -13,9 +13,10 @@ export const SineScroll = ({ audioData: _audioData, text, speed = 30, amplitude 
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollPosRef = useRef(window.innerHeight);
   const animationRef = useRef<number | undefined>(undefined);
-  const lastTimeRef = useRef<number>(performance.now());
+  const lastTimeRef = useRef(0); // set when the animation starts
 
   useEffect(() => {
+    lastTimeRef.current = performance.now();
     const animate = (timestamp: number) => {
       if (!containerRef.current) return;
 

@@ -26,7 +26,7 @@ import { SceneInfo } from "../components/SceneInfo";
 import type { Scene } from "../components/SceneManager";
 import type { AudioAnalysisData } from "../types/audio";
 
-export const createScenes = (audioData: AudioAnalysisData | null, moireAudioDataRef: React.RefObject<AudioAnalysisData | null> = { current: null }): Scene[] => [
+export const createScenes = (audioData: AudioAnalysisData | null): Scene[] => [
   // Title Screen with bouncing Amiga ball
   {
     id: "title",
@@ -546,6 +546,6 @@ export const createScenes = (audioData: AudioAnalysisData | null, moireAudioData
   {
     id: "moirepatterns",
     duration: 60,
-    component: <MoirePatternsScene audioDataRef={moireAudioDataRef} />,
+    component: <MoirePatternsScene />,
   },
 ];

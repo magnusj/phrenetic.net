@@ -20,11 +20,12 @@ export const DYCPScroller = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const animationRef = useRef<number>(0);
   const scrollPosRef = useRef<number>(window.innerWidth);
-  const lastTimeRef = useRef<number>(performance.now());
+  const lastTimeRef = useRef(0); // set when the animation starts
 
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
+    lastTimeRef.current = performance.now();
 
     const chars = text.split('');
     container.innerHTML = '';
