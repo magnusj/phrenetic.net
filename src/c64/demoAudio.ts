@@ -26,6 +26,9 @@ export class DemoAudio {
   private effectsGain: GainNode | null = null;
   private readonly effects = new Map<EffectName, Promise<AudioBuffer>>();
   private readonly music = new Map<MusicName, HTMLAudioElement>();
+  // Music volume goes through Web Audio: iOS ignores HTMLMediaElement.volume
+  private readonly musicGains = new Map<HTMLAudioElement, GainNode>();
+  private fadeTimer: ReturnType<typeof setTimeout> | null = null;
   private playingEffect: AudioBufferSourceNode | null = null;
   private playingMusic: HTMLAudioElement | null = null;
 
@@ -60,7 +63,11 @@ export class DemoAudio {
         .play()
         .then(() => audio.pause())
         .catch(() => {});
+      const gain = ctx.createGain();
+      ctx.createMediaElementSource(audio).connect(gain);
+      gain.connect(ctx.destination);
       this.music.set(name, audio);
+      this.musicGains.set(audio, gain);
     }
   }
 
@@ -84,16 +91,42 @@ export class DemoAudio {
 
   playMusic(name: MusicName) {
     const audio = this.music.get(name);
-    if (!audio) return;
+    if (!audio || !this.ctx) return;
+    this.cancelFade();
     this.playingMusic?.pause();
+    const gain = this.musicGains.get(audio)!.gain;
+    gain.cancelScheduledValues(this.ctx.currentTime);
+    gain.setValueAtTime(1, this.ctx.currentTime);
     audio.currentTime = 0;
     audio.muted = false;
     void audio.play().catch(() => {});
     this.playingMusic = audio;
   }
 
+  /** Fade the playing music to silence over `seconds`, then stop it. */
+  fadeOutMusic(seconds: number) {
+    const audio = this.playingMusic;
+    if (!audio || !this.ctx) return;
+    const gain = this.musicGains.get(audio)!.gain;
+    const now = this.ctx.currentTime;
+    gain.cancelScheduledValues(now);
+    gain.setValueAtTime(gain.value, now);
+    gain.linearRampToValueAtTime(0, now + seconds);
+    this.cancelFade();
+    this.fadeTimer = setTimeout(() => {
+      audio.pause();
+      if (this.playingMusic === audio) this.playingMusic = null;
+    }, seconds * 1000);
+  }
+
+  private cancelFade() {
+    if (this.fadeTimer) clearTimeout(this.fadeTimer);
+    this.fadeTimer = null;
+  }
+
   /** Silence everything, keeping the unlocked context and elements for the next visit. */
   stopAll() {
+    this.cancelFade();
     this.stopEffect();
     this.playingMusic?.pause();
     this.playingMusic = null;

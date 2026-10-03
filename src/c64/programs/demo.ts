@@ -19,27 +19,32 @@ export interface Part extends C64Program {
 }
 
 interface PartEntry {
-  create: () => Part;
+  seconds: number;
+  create: (frames: number) => Part;
+  /** Music to start when the part begins */
   music?: MusicName;
+  /** Fade the music out over this many seconds at the end of the part */
+  fadeOutMusic?: number;
 }
 
-const seconds = (s: number) => Math.round(s * 50);
+const FPS = 50;
 
 // Parts after the load sequence, in order. The last part keeps running when it finishes.
 const PARTS: PartEntry[] = [
-  { create: () => createLogoPart(seconds(20)), music: 'alive' },
-  { create: () => createMultiplexerPart(seconds(20)) },
-  { create: () => createDycpPart(seconds(20)) },
-  { create: () => createPlasmaPart(seconds(10)) },
-  { create: () => createTwisterPart(seconds(10)) },
-  { create: () => createRotozoomerPart(seconds(11)) },
-  { create: () => createTunnelPart(seconds(11)) },
-  { create: () => createVectorPart(seconds(22)) },
-  { create: () => createScrollWorldPart(seconds(21)) },
-  { create: () => createFliPart(seconds(35)), music: 'forYou' },
-  { create: () => createEndPart(seconds(165.5)) },
+  { seconds: 20, create: createLogoPart, music: 'alive' },
+  { seconds: 20, create: createMultiplexerPart },
+  { seconds: 20, create: createDycpPart },
+  { seconds: 10, create: createPlasmaPart },
+  { seconds: 10, create: createTwisterPart },
+  { seconds: 11, create: createRotozoomerPart },
+  { seconds: 11, create: createTunnelPart },
+  { seconds: 22, create: createVectorPart },
+  // Alive's recording stops at its loop point, so fade it out instead of cutting to For You
+  { seconds: 21, create: createScrollWorldPart, fadeOutMusic: 3 },
+  { seconds: 35, create: createFliPart, music: 'forYou' },
+  { seconds: 165.5, create: createEndPart },
   // After For You ends, the demo "exits" to the BASIC prompt
-  { create: () => ({ ...createBootScreen(), finished: false }) },
+  { seconds: Infinity, create: () => ({ ...createBootScreen(), finished: false }) },
 ];
 
 /** The whole C64 demo: load sequence, then each part in turn, starting music where a part asks for it. */
@@ -50,15 +55,23 @@ export const createC64Demo = (audio: DemoAudio): C64Program & { start(): void } 
     onFinished: () => audio.stopEffect(),
   });
   let current: Part = load;
+  let entry: PartEntry | null = null;
   let next = 0;
+  let partFrame = 0;
 
   const advance = (vic: Vic) => {
     if (!current.finished || next >= PARTS.length) return;
-    const entry = PARTS[next++];
-    current = entry.create();
+    entry = PARTS[next++];
+    current = entry.create(Math.round(entry.seconds * FPS));
+    partFrame = 0;
     vic.reset();
     current.init?.(vic);
     if (entry.music) audio.playMusic(entry.music);
+  };
+
+  const cueFade = () => {
+    if (!entry?.fadeOutMusic) return;
+    if (partFrame === Math.round((entry.seconds - entry.fadeOutMusic) * FPS)) audio.fadeOutMusic(entry.fadeOutMusic);
   };
 
   return {
@@ -66,6 +79,8 @@ export const createC64Demo = (audio: DemoAudio): C64Program & { start(): void } 
     init: (vic) => load.init?.(vic),
     frame(vic, frame) {
       advance(vic);
+      cueFade();
+      partFrame++;
       current.frame?.(vic, frame);
     },
     rasterLine: (vic, line) => current.rasterLine?.(vic, line),
