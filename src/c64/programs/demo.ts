@@ -1,6 +1,7 @@
 import { createLoadSequence } from './loadSequence';
 import { createLogoPart } from './logoPart';
 import { createMultiplexerPart } from './multiplexerPart';
+import { createDycpPart } from './dycpPart';
 import type { DemoAudio, MusicName } from '../demoAudio';
 import type { C64Program, Vic } from '../vic';
 
@@ -20,6 +21,7 @@ const seconds = (s: number) => Math.round(s * 50);
 const PARTS: PartEntry[] = [
   { create: () => createLogoPart(seconds(20)), music: 'alive' },
   { create: () => createMultiplexerPart(seconds(20)) },
+  { create: () => createDycpPart(seconds(20)) },
 ];
 
 /** The whole C64 demo: load sequence, then each part in turn, starting music where a part asks for it. */
