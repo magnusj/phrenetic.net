@@ -10,3 +10,21 @@
 .c64-demo-screen {
   width: min(100vw, calc(100dvh * 1.322));
 }
+
+.c64-demo-hint {
+  position: absolute;
+  bottom: 16px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  color: #6c5eb5;
+  animation: c64-hint-blink 1.2s steps(2, start) infinite;
+}
+
+@keyframes c64-hint-blink {
+  to {
+    visibility: hidden;
+  }
+}
