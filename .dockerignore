@@ -1,0 +1,10 @@
+# Installed and built inside the image; host copies would overwrite them
+# (and carry macOS native binaries, e.g. Rolldown's, into the Linux build)
+node_modules
+dist
+
+.git
+.github
+.claude
+*.log
+.DS_Store
