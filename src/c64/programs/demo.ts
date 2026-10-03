@@ -8,6 +8,8 @@ import { createRotozoomerPart, createTunnelPart } from './chunkyParts';
 import { createVectorPart } from './vectorPart';
 import { createScrollWorldPart } from './scrollWorldPart';
 import { createFliPart } from './fliPart';
+import { createEndPart } from './endPart';
+import { createBootScreen } from './bootScreen';
 import type { DemoAudio, MusicName } from '../demoAudio';
 import type { C64Program, Vic } from '../vic';
 
@@ -35,6 +37,9 @@ const PARTS: PartEntry[] = [
   { create: () => createVectorPart(seconds(22)) },
   { create: () => createScrollWorldPart(seconds(21)) },
   { create: () => createFliPart(seconds(35)), music: 'forYou' },
+  { create: () => createEndPart(seconds(165.5)) },
+  // After For You ends, the demo "exits" to the BASIC prompt
+  { create: () => ({ ...createBootScreen(), finished: false }) },
 ];
 
 /** The whole C64 demo: load sequence, then each part in turn, starting music where a part asks for it. */
