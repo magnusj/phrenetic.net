@@ -18,6 +18,8 @@ export type MusicName = keyof typeof MUSIC;
 /**
  * All C64 demo audio. Short effects play from decoded buffers; music streams from audio elements.
  * Call unlock() from a user gesture before anything can play (required by mobile Safari).
+ * One shared instance (`demoAudio`) lives for the whole page, so the selector can unlock it in the
+ * click that opens the C64 demo.
  */
 export class DemoAudio {
   private ctx: AudioContext | null = null;
@@ -26,6 +28,10 @@ export class DemoAudio {
   private readonly music = new Map<MusicName, HTMLAudioElement>();
   private playingEffect: AudioBufferSourceNode | null = null;
   private playingMusic: HTMLAudioElement | null = null;
+
+  get unlocked() {
+    return this.ctx !== null;
+  }
 
   unlock() {
     if (this.ctx) return;
@@ -86,17 +92,12 @@ export class DemoAudio {
     this.playingMusic = audio;
   }
 
-  dispose() {
+  /** Silence everything, keeping the unlocked context and elements for the next visit. */
+  stopAll() {
     this.stopEffect();
-    for (const audio of this.music.values()) {
-      audio.pause();
-      audio.removeAttribute('src');
-      audio.load();
-    }
-    this.music.clear();
+    this.playingMusic?.pause();
     this.playingMusic = null;
-    void this.ctx?.close();
-    this.ctx = null;
-    this.effectsGain = null;
   }
 }
+
+export const demoAudio = new DemoAudio();

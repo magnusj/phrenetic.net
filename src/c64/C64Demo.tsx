@@ -1,22 +1,25 @@
 import { useEffect, useMemo, useState } from 'react';
-import { DemoAudio } from './demoAudio';
+import { demoAudio } from './demoAudio';
 import { C64Screen } from './C64Screen';
 import { createC64Demo } from './programs/demo';
 import './C64Demo.css';
 
 export const C64Demo = () => {
-  const audio = useMemo(() => new DemoAudio(), []);
-  const program = useMemo(() => createC64Demo(audio), [audio]);
-  const [started, setStarted] = useState(false);
+  const program = useMemo(() => createC64Demo(demoAudio), []);
+  // Opened from the selector, the click on the card already unlocked audio, so loading starts at once
+  const [started, setStarted] = useState(() => demoAudio.unlocked);
 
-  useEffect(() => () => audio.dispose(), [audio]);
+  useEffect(() => {
+    if (demoAudio.unlocked) program.start();
+    return () => demoAudio.stopAll();
+  }, [program]);
 
-  // The first click, tap or key press "types" LOAD. Browsers also require a gesture before audio can play.
+  // Otherwise the first click, tap or key press "types" LOAD, and unlocks audio
   useEffect(() => {
     if (started) return;
     const handleGesture = (e: Event) => {
       if (e instanceof KeyboardEvent && e.key === 'Escape') return;
-      audio.unlock();
+      demoAudio.unlock();
       program.start();
       setStarted(true);
     };
@@ -26,7 +29,7 @@ export const C64Demo = () => {
       window.removeEventListener('pointerdown', handleGesture);
       window.removeEventListener('keydown', handleGesture);
     };
-  }, [audio, program, started]);
+  }, [program, started]);
 
   return (
     <div className="c64-demo">
